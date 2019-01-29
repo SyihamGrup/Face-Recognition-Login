@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 import cv2
+import os
+from PIL import Image
 import numpy as np 
 from .settings import BASE_DIR
 def index(request):
@@ -44,8 +46,41 @@ def create_dataset(request):
 
 	return redirect('/')
 
+def trainer(request):
+	recognizer = cv2.face.LBPHFaceRecognizer_create()
 
+	path = BASE_DIR+'util/dataset'
 
+	def getImagesWithId(path):
+		imagesPaths = [os.path.join(path,f) for f in os.listdir(path)]
+
+		faces = []
+		Ids = []
+
+		for imagePath in imagePaths:
+
+			faceImg = Image.open(imagePath).convert('L')
+
+			faceNp = np.array(faceImg,'unit8')
+
+			ID = int(os.path.split(imagePath)[-1].split('.')[1])
+
+			faces.append(faceNp)
+
+			Ids.append(ID)
+
+			cv2.imshow("training",faceNp)
+			cv2.waitKey(10)
+
+		return np.array(Ids),np.array(faces)
+	id,faces = getImagesWithID(path)
+
+	recognizer.train(faces,ids)
+
+	recognizer.save(BASE_DIR+'utils/recognizer/trainingData.yml')
+	cv2.destroyAllWindows()
+
+	return redirec('/')
 
 
 
