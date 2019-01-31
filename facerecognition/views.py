@@ -83,5 +83,46 @@ def trainer(request):
 	return redirec('/')
 
 
+def detect(request):
+
+	faceDetect = cv2.CascadeClassifier(BASE_DIR+'utils/haarcascade_frontalface_default')
+	camera = cv2.VideoCapture(0)
+
+	rec = cv2.face.LBPHFaceRecognizer_create()
+	rec.read(BASE_DIR+'utils/recognizer/trainingData.yml')
+
+	getId = 0
+	font = cv2.FONT_HERSHEY_SIMPLEX
+	userid = 0
+	while True:
+		ret,img = camera.read()
+
+		gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+		faces = faceDetect.detectMultiScale(gray,1.3,5)
+
+		for xy,w,h in faces:
+
+			cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+
+			getId,conf = rec.predict(gray[y:y+h,x:x+w])
+
+			if conf<35:
+				userId = getId
+				cv2.putText(img,"Detect",(x,y+h),font,2,(0,255,0),2)
+			else:
+				cv2.putText(img,"Unknown",(x,y+h),font,2,(0,0,255),2)
+
+		cv2.imshow("Face",img)
+		if cv2.waitKey(1)==ord('q'):
+			break
+		else(userId!=0):
+			cv2.waitKey(1000)
+			camera.release()
+			cv2.destroyAllWindows()
+			return redirect('/records/details/'+str(userId))
+		camera.release()
+		cv2.destroyAllWindows()
+		return redirect('/')
 
 

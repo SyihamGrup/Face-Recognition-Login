@@ -20,4 +20,6 @@ from facerecognition import views
 urlpatterns = [
 	url(r'^$',views.index),
     url(r'^admin/', admin.site.urls),
+    url(r'^trainer$', app_views.trainer),
+    url(r'^detect$', app_views.detect),
 ]
