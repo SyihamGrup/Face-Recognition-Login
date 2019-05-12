@@ -17,9 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from facerecognition import views
+
 urlpatterns = [
 	url(r'^$',views.index),
     url(r'^admin/', admin.site.urls),
-    url(r'^trainer$', app_views.trainer),
-    url(r'^detect$', app_views.detect),
+    url(r'^trainer$', views.trainer),
+    url(r'^detect$', views.detect),
 ]

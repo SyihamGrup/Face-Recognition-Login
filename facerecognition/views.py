@@ -116,7 +116,7 @@ def detect(request):
 		cv2.imshow("Face",img)
 		if cv2.waitKey(1)==ord('q'):
 			break
-		else(userId!=0):
+		elif userId!=0:
 			cv2.waitKey(1000)
 			camera.release()
 			cv2.destroyAllWindows()
